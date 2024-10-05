@@ -8,7 +8,7 @@ except ImportError:
     st.stop()
 
 # Set your email for NCBI's E-utilities
-Entrez.email = "your_email@example.com"
+Entrez.email = "csv610@gmail.com"
 
 def search_pubmed(query, max_results=10):
     try:
@@ -46,29 +46,25 @@ def search_pubmed(query, max_results=10):
         return []
 
 # Streamlit app
-st.title("PubMed Article Search")
+st.sidebar.title("PubMed")
+max_results = st.sidebar.slider("Maximum number of results", 1, 100, 10)
 
 # User input
 query = st.text_input("Enter your search query:")
-max_results = st.slider("Maximum number of results", 1, 50, 10)
 
-if st.button("Search"):
-    if query:
-        with st.spinner("Searching PubMed..."):
-            results = search_pubmed(query, max_results)
-        
-        if results:
-            for result in results:
-                st.write(f"**Title:** {result['title']}")
-                st.write(f"**Authors:** {result['authors']}")
-                st.write(f"**Journal:** {result['journal']}")
-                st.write(f"**Publication Date:** {result['pubdate']}")
-                st.write(f"**PMID:** {result['pmid']}")
-                with st.expander("Show Abstract"):
-                    st.write(result['abstract'])
-                st.write("---")
-        else:
-            st.warning("No results found or an error occurred. Please try again.")
+if query:  # Trigger search when user presses "Return"
+    with st.spinner("Searching PubMed..."):
+        results = search_pubmed(query, max_results)
+    
+    if results:
+        for result in results:
+            st.write(f"**Title:** {result['title']}")
+            st.write(f"**Authors:** {result['authors']}")
+            st.write(f"**Journal:** {result['journal']}")
+            st.write(f"**Publication Date:** {result['pubdate']}")
+            st.write(f"**PMID:** {result['pmid']}")
+            with st.expander("Show Abstract"):
+                st.write(result['abstract'])
+            st.write("---")
     else:
-        st.warning("Please enter a search query.")
-
+        st.warning("No results found or an error occurred. Please try again.")
