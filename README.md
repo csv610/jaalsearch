@@ -1,119 +1,159 @@
+# JAAlSearch - Multi-Engine Web Search Toolkit
 
-# Web Search Using DuckDuckGo, PubMed, Wikipedia, Travily, and SerpAPI
+A comprehensive, modular Python toolkit for searching across multiple web and scientific databases. Featuring a clean architecture with reusable search engine classes, CLI tools, and Streamlit web applications.
 
-Web search is an essential tool for navigating the vast ocean of information available on the internet. With multiple search engines and APIs, users can customize their search experiences according to their needs, whether for privacy, precision, scientific research, or automation. In this article, we'll explore five popular web search solutions: DuckDuckGo, PubMed, Wikipedia, Travily, and SerpAPI. Each of these tools has unique features, and understanding their capabilities will help you choose the best one for your requirements.
+## Overview
 
-## DuckDuckGo Search
+JAAlSearch provides a unified interface for searching across multiple sources:
+- **DuckDuckGo** - Privacy-focused general web search
+- **Wikipedia** - Knowledge base search
+- **PubMed** - Scientific and medical literature
+- **SerpAPI** - Google search results (requires API key)
+- **Tavily** - AI-powered search engine (requires API key)
 
-**DuckDuckGo** is a popular search engine well-known for its focus on privacy. Unlike other major search engines, DuckDuckGo does not track your search activity, offering users peace of mind when browsing. The DuckDuckGo Search API can also be used programmatically to conduct searches without accessing the official website directly.
+## Project Structure
 
-### Benefits of Using DuckDuckGo
-
-- **Privacy-Focused**: DuckDuckGo's main advantage is its privacy protection. It doesn't collect or share your personal information, making it the go-to choice for privacy-conscious users.
-- **Customizable SafeSearch Levels**: DuckDuckGo allows users to set SafeSearch levels to control the type of content displayed.
-- **Efficient Web Scraping**: Through tools like **duckduckgo_search** (a Python library), you can integrate DuckDuckGo searches into your own scripts. For example, you can perform searches and extract relevant data using a simple command line tool or Python script:
-
-  ```python
-  from duckduckgo_search import DDGS
-
-  ddgs_instance = DDGS()
-  results = ddgs_instance.text("Artificial Intelligence", max_results=5)
-  for result in results:
-      print(result)
-  ```
-
-This approach allows developers to access real-time search data without compromising their users' privacy.
-
-## PubMed Search
-
-**PubMed** is a free resource developed by the National Center for Biotechnology Information (NCBI) and provides access to scientific and medical research papers, making it essential for anyone involved in healthcare or research.
-
-### Benefits of Using PubMed
-
-- **Access to Peer-Reviewed Studies**: PubMed includes citations and full-text links to research articles from biomedical literature.
-- **Advanced Search Options**: The platform allows for precise searches using a variety of medical and scientific terms.
-- **Integration via API**: The PubMed API enables developers to integrate this wealth of knowledge into their own applications for direct retrieval of medical literature.
-
-Example API usage:
-
-```python
-import requests
-
-response = requests.get("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi", 
-                        params={"db": "pubmed", "term": "COVID-19"})
-print(response.text)
+```
+jaalsearch/
+├── src/                          # Core module
+│   ├── __init__.py
+│   └── search_engines.py         # Reusable search classes
+│
+├── cli/                          # Command-line interfaces
+│   ├── __init__.py
+│   ├── duckgo.py                # DuckDuckGo CLI
+│   ├── serp.py                  # SerpAPI CLI
+│   └── tavily.py                # Tavily CLI
+│
+├── streamlit_apps/              # Web-based applications
+│   ├── __init__.py
+│   ├── duckgo.py                # DuckDuckGo web app
+│   ├── serp.py                  # SerpAPI web app
+│   ├── tavily.py                # Tavily web app
+│   ├── wikipedia.py             # Wikipedia web app
+│   └── pubmed.py                # PubMed web app
+│
+├── config/                      # Configuration
+│   ├── __init__.py
+│   └── settings.py              # App settings
+│
+├── utils/                       # Utilities and helpers
+│   ├── __init__.py
+│   └── helpers.py               # Helper functions
+│
+├── tests/                       # Test suite
+│   ├── __init__.py
+│   └── test_search_engines.py  # Search engine tests
+│
+├── docs/                        # Documentation
+│   ├── REFACTORING_SUMMARY.md
+│   ├── ARCHITECTURE.md
+│   ├── USAGE_EXAMPLES.md
+│   └── IMPLEMENTATION_SUMMARY.txt
+│
+├── requirements.txt             # Python dependencies
+├── .gitignore                   # Git ignore rules
+├── README.md                    # This file
+└── REFACTORING_README.md        # Refactoring guide
 ```
 
-This script fetches articles related to "COVID-19" from PubMed.
+## Quick Start
 
-## Wikipedia Search
+### Installation
 
-**Wikipedia** is a widely-used online encyclopedia that covers a vast array of topics. Wikipedia’s search is excellent for finding general knowledge on a broad range of subjects.
-
-### Benefits of Using Wikipedia
-
-- **Comprehensive and Community-Driven**: Wikipedia covers nearly every subject and is constantly updated by contributors around the world.
-- **Easily Accessible API**: You can integrate Wikipedia searches into your applications using the MediaWiki API to retrieve article summaries, links, and more.
-
-Example usage:
-
-```python
-import wikipedia
-
-summary = wikipedia.summary("Machine Learning", sentences=3)
-print(summary)
+```bash
+git clone https://github.com/csv610/jaalsearch.git
+cd jaalsearch
+pip install -r requirements.txt
 ```
 
-This script retrieves a brief summary of the "Machine Learning" article from Wikipedia.
+### Environment Variables (Optional)
 
-## Travily Search
-
-**Travily** is another web search tool, gaining popularity for providing personalized travel and location-based searches. Travily directs users to relevant information about accommodations, travel deals, and local insights, making it an excellent resource for travelers.
-
-### Benefits of Using Travily
-
-- **Personalized Travel Search**: Travily specializes in searches related to travel, providing results that cater specifically to travel interests.
-- **Location-Based Suggestions**: You can get the best local deals and insights based on your location or the places you're searching for.
-
-## SerpAPI Search
-
-**SerpAPI** provides access to the Google Search Engine programmatically. It is a highly flexible search tool that allows developers to extract data from Google results in real time, including rich snippets, images, news, and more.
-
-### Benefits of Using SerpAPI
-
-- **Google Search Data**: SerpAPI provides real-time access to Google's search data, including organic and paid results.
-- **Rich Data Extraction**: SerpAPI is capable of extracting data from Google Images, Maps, Shopping, and News, offering versatility in data collection.
-- **Ease of Use**: The SerpAPI interface is very developer-friendly, with straightforward integration and well-documented usage examples.
-
-An example of how SerpAPI works is shown below:
-
-```python
-import requests
-
-params = {
-    "engine": "google",
-    "q": "OpenAI",
-    "api_key": "YOUR_API_KEY",
-}
-
-response = requests.get("https://serpapi.com/search", params=params)
-results = response.json()
-for result in results.get("organic_results", []):
-    print(result["title"], result["link"])
+```bash
+export SERPAPI_API_KEY="your-key"
+export TAVILY_API_KEY="your-key"
+export PUBMED_EMAIL="your-email@example.com"
 ```
 
-## Which One Should You Use?
+### CLI Usage
 
-Each of these tools has distinct advantages that make them suitable for different use cases:
+```bash
+python -m cli.duckgo -q "python programming" -n 5
+python -m cli.serp -q "machine learning" -n 10
+python -m cli.tavily -q "artificial intelligence" -n 5
+```
 
-- **DuckDuckGo** is perfect for users who prioritize privacy and need simple web search capabilities.
-- **PubMed** is ideal for researchers or anyone needing access to scientific and medical articles.
-- **Wikipedia** provides a general, community-driven knowledge base for a wide array of topics.
-- **Travily** is great for travelers seeking location-based insights and deals.
-- **SerpAPI** is the best option for developers needing access to Google’s search ecosystem, especially if they require rich data extraction across multiple Google platforms.
+### Streamlit Apps
 
-Whether you're a privacy advocate, a researcher, a travel enthusiast, or a developer, these search engines and APIs provide powerful tools to access and interact with information online.
+```bash
+streamlit run streamlit_apps/duckgo.py
+streamlit run streamlit_apps/serp.py
+streamlit run streamlit_apps/tavily.py
+streamlit run streamlit_apps/wikipedia.py
+streamlit run streamlit_apps/pubmed.py
+```
 
-## Conclusion
+### Python Module
 
-Web search tools like DuckDuckGo, PubMed, Wikipedia, Travily, and SerpAPI offer unique ways to explore and extract information from the internet. Whether your focus is privacy, scientific research, general knowledge, or travel, these tools provide distinct capabilities to suit your needs.
+```python
+from src import DuckDuckGoSearch, WikipediaSearch
+
+ddg = DuckDuckGoSearch()
+results = ddg.search("python tutorial", num_results=5)
+
+wiki = WikipediaSearch()
+results = wiki.search("Albert Einstein", num_results=3)
+```
+
+## Testing
+
+```bash
+python -m pytest tests/
+python -m pytest tests/ --cov=src
+```
+
+## Documentation
+
+See `docs/` folder for comprehensive documentation:
+- REFACTORING_SUMMARY.md - Overview of refactoring
+- ARCHITECTURE.md - Technical design
+- USAGE_EXAMPLES.md - Usage examples
+- IMPLEMENTATION_SUMMARY.txt - Metrics
+
+## Features
+
+✅ Reusable search engine classes  
+✅ Multiple interfaces (CLI, Streamlit, Python API)  
+✅ Clean architecture with separation of concerns  
+✅ Comprehensive error handling and validation  
+✅ Performance caching  
+✅ Well-documented code and examples  
+✅ Full test coverage  
+
+## Environment Variables
+
+| Variable | Purpose | Required |
+|----------|---------|----------|
+| `SERPAPI_API_KEY` | Google search | For SerpAPI |
+| `TAVILY_API_KEY` | Tavily search | For Tavily |
+| `PUBMED_EMAIL` | PubMed email | Optional |
+
+## Dependencies
+
+See `requirements.txt` for full list:
+- requests
+- duckduckgo-search
+- wikipedia
+- biopython
+- tavily
+- streamlit
+- beautifulsoup4
+- cachetools
+
+## License
+
+MIT License
+
+---
+
+Built with ❤️ for developers and researchers

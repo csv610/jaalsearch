@@ -1,5 +1,13 @@
+"""Google Search via SerpAPI Streamlit App"""
+
 import streamlit as st
-from search_engines import SerpAPISearch
+import sys
+from pathlib import Path
+
+# Add parent directory to path to import from src
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from src import SerpAPISearch
 
 
 @st.cache_resource

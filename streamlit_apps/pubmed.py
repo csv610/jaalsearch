@@ -1,5 +1,13 @@
+"""PubMed Scientific Literature Search Streamlit App"""
+
 import streamlit as st
-from search_engines import PubMedSearch
+import sys
+from pathlib import Path
+
+# Add parent directory to path to import from src
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from src import PubMedSearch
 
 
 @st.cache_resource
